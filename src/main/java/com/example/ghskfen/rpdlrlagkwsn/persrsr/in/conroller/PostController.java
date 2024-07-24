@@ -27,21 +27,21 @@ public class PostController {
         model.addAttribute("totalPages", postPage.getTotalPages());
         return "posts";
     }
-    @GetMapping("/posts/{post_id}/detail")
+    @GetMapping("/{post_id}/detail")
     public String getPostDetail(@PathVariable("post_id") Long postId, Model model) {
         Post post = postservice.getPostById(postId);
         model.addAttribute("post", post);
         return "postDetail";
     }
 
-    @GetMapping("/post/upload/{id}")
+    @GetMapping("/upload/{id}")
     public String getUploadForm(@PathVariable("id") Long id, Model model) {
         Post post = postservice.getPostById(id);
         model.addAttribute("post", post);
         return "uploadForm";
     }
 
-    @GetMapping("/post/edit")
+    @GetMapping("/edit")
     public String getEditForm(@RequestParam("id") Long id, Model model) {
         Post post = postservice.getPostById(id);
         model.addAttribute("post", post);
@@ -53,5 +53,10 @@ public class PostController {
     public ResponseEntity<Post> createPost(@RequestBody Post post) {
         Post createdPost = postservice.createPost(post);
         return new ResponseEntity<>(createdPost, HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/{id}")
+    public String deletePost(@PathVariable Long id) {
+        return postservice.deletePost(id);
     }
 }
