@@ -37,6 +37,14 @@ public class Postservice {
             throw new IllegalArgumentException("유효한 id가 아니잖아");
         }
     }
+    public String deletePost(Long id) {
+        if (postRepository.existsById(id)) {
+            postRepository.deleteById(id);
+            return "게시글 id=" + id + " 삭제 성공";
+        } else {
+            return "게시글 id=" + id + "를 찾을 수 없습니다";
+        }
+    }
 
 }
 
