@@ -1,5 +1,6 @@
 package com.example.ghskfen.rpdlrlagkwsn.service;
 
+import com.example.ghskfen.rpdlrlagkwsn.exception.ResourceNotFoundException;
 import com.example.ghskfen.rpdlrlagkwsn.persrsr.in.entity.Post;
 import com.example.ghskfen.rpdlrlagkwsn.persrsr.in.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.Sort;
 
 @Service
 public class Postservice {
+
     @Autowired
     private PostRepository postRepository;
 
@@ -40,11 +42,24 @@ public class Postservice {
     public String deletePost(Long id) {
         if (postRepository.existsById(id)) {
             postRepository.deleteById(id);
-            return "게시글 id=" + id + " 삭제 성공";
+            return "게시글 id= " + id + " 삭제 성공";
         } else {
-            return "게시글 id=" + id + "를 찾을 수 없습니다";
+            return "게시글 id= " + id + "를 찾을 수 없습니다";
         }
     }
 
+    public Postservice(PostRepository postRepository) {
+        this.postRepository = postRepository;
+    }
+
+    public Post updatePost(Long id, Post postDetails) throws ResourceNotFoundException {
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("해당 게시글 id=" + id + "를 찾을 수 없습니다"));
+
+        post.setTitle(postDetails.getTitle());
+        post.setContent(postDetails.getContent());
+
+        return postRepository.save(post);
+    }
 }
 
