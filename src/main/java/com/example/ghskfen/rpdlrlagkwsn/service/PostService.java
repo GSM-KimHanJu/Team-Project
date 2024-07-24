@@ -9,8 +9,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class PostService {
 
-    @Autowired
-    private PostRepository postRepository;
+    private final PostRepository postRepository;
 
 
     public Post createPost(Post post) {
@@ -23,7 +22,7 @@ public class PostService {
         this.postRepository = postRepository;
     }
 
-    public boolean deletPost(Long id) {
+    public boolean deletePost(Long id) {
         if (postRepository.existsById(id)) {
             postRepository.deleteById(id);
         } else {
