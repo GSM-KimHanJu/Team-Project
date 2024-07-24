@@ -1,6 +1,6 @@
 package com.example.ghskfen.rpdlrlagkwsn.persrsr.in.conroller;
 
-import com.example.ghskfen.rpdlrlagkwsn.persrsr.model.Post;
+import com.example.ghskfen.rpdlrlagkwsn.persrsr.in.entity.Post;
 import com.example.ghskfen.rpdlrlagkwsn.service.Postservice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,17 +12,11 @@ import java.util.List;
 @RequestMapping("/posts")
 public class PostController {
     @Autowired
-    private Postservice postService;
+    private Postservice postservice;
 
     @PostMapping
     public ResponseEntity<Post> createPost(@RequestBody Post post) {
-        Post createdPost = postService.createPost(post);
+        Post createdPost = postservice.createPost(post);
         return new ResponseEntity<>(createdPost, HttpStatus.CREATED);
-    }
-
-    @GetMapping
-    public ResponseEntity<List<Post>> getAllPosts() {
-        List<Post> posts = postService.getPosts();
-        return new ResponseEntity<>(posts, HttpStatus.OK);
     }
 }
