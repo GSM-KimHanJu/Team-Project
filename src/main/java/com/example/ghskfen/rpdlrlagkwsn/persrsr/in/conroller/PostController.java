@@ -24,7 +24,7 @@ public class PostController {
     @Autowired
     private PostRepository postRepository;
 
-    @GetMapping
+    @GetMapping("/all")
     public String getPosts(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
@@ -40,7 +40,7 @@ public class PostController {
     public String getPostDetail(@PathVariable("post_id") Long postId, Model model) {
         Post post = postservice.getPostById(postId);
         model.addAttribute("post", post);
-        return "postDetail";
+        return "sucess";
     }
 
     @GetMapping("/upload/{id}")
@@ -50,8 +50,8 @@ public class PostController {
         return "uploadForm";
     }
 
-    @GetMapping("/edit")
-    public String getEditForm(@RequestParam("id") Long id, Model model) {
+    @GetMapping("/edit/{id}")
+    public String getEditForm(@PathVariable("id") Long id, Model model) {
         Post post = postservice.getPostById(id);
         model.addAttribute("post", post);
         return "editForm";
@@ -73,7 +73,7 @@ public class PostController {
         this.postservice = postservice;
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("put/{id}")
     public ResponseEntity<Post> updatePost(@PathVariable Long id, @RequestBody Post updatedPost) {
         Optional<Post> optionalPost = postRepository.findById(id);
 
