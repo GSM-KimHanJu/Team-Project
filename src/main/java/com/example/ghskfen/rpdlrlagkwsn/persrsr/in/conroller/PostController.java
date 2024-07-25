@@ -1,8 +1,10 @@
 package com.example.ghskfen.rpdlrlagkwsn.persrsr.in.conroller;
 
 import com.example.ghskfen.rpdlrlagkwsn.persrsr.in.entity.Post;
+import com.example.ghskfen.rpdlrlagkwsn.persrsr.in.repository.PostRepository;
 import com.example.ghskfen.rpdlrlagkwsn.service.Postservice;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,11 +12,18 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/posts")
 public class PostController {
+
     @Autowired
+
     private Postservice postservice;
+    @Autowired
+    private PostRepository postRepository;
+
     @GetMapping
     public String getPosts(
             @RequestParam(defaultValue = "0") int page,
@@ -59,4 +68,26 @@ public class PostController {
     public String deletePost(@PathVariable Long id) {
         return postservice.deletePost(id);
     }
+
+    public PostController(Postservice postservice) {
+        this.postservice = postservice;
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Post> updatePost(@PathVariable Long id, @RequestBody Post updatedPost) {
+        Optional<Post> optionalPost = postRepository.findById(id);
+
+        if (!optionalPost.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Post existingPost = optionalPost.get();
+        existingPost.setTitle(updatedPost.getTitle());
+        existingPost.setContent(updatedPost.getContent());
+
+        postRepository.save(existingPost);
+
+        return ResponseEntity.ok(existingPost);
+    }
+
 }
