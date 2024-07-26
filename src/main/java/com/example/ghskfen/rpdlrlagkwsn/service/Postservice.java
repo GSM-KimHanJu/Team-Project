@@ -3,12 +3,10 @@ package com.example.ghskfen.rpdlrlagkwsn.service;
 import com.example.ghskfen.rpdlrlagkwsn.exception.ResourceNotFoundException;
 import com.example.ghskfen.rpdlrlagkwsn.persrsr.in.entity.Post;
 import com.example.ghskfen.rpdlrlagkwsn.persrsr.in.repository.PostRepository;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+
 
 @Service
 public class Postservice {
@@ -20,10 +18,11 @@ public class Postservice {
         return postRepository.save(post);
     }
 
-    public Page<Post> getPosts(int page, int size, String sort) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by(sort).ascending());
-        return postRepository.findAll(pageable);
+    public List<Post> getAllPosts() {
+        return postRepository.findAll();
     }
+
+
     public Post getPostById(Long id) {
         return postRepository.findById(id).orElse(null);
     }

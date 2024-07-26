@@ -26,16 +26,8 @@ public class PostController {
     private PostRepository postRepository;
 
     @GetMapping("/all")
-    public String getPosts(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "id") String sort,
-            Model model) {
-        Page<Post> postPage = postservice.getPosts(page, size, sort);
-        model.addAttribute("posts", postPage.getContent());
-        model.addAttribute("currentPage", page);
-        model.addAttribute("totalPages", postPage.getTotalPages());
-        return "posts";
+    public List<Post> getAllPosts() {
+        return postservice.getAllPosts();
     }
     @GetMapping("/{post_id}/detail")
     public String getPostDetail(@PathVariable("post_id") Long postId, Model model) {
